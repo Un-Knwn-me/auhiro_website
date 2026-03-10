@@ -80,37 +80,43 @@ const evModels = [
   },
 ];
 
-// Vehicle data for showcase
+// Vehicle data for showcase - 6 vehicles with distinct background colors
 const vehicles = [
   {
-    name: "City Cruiser",
+    name: "E-Cycle Red",
     slug: "city-cruiser",
     image: "/images/vehicles/city-cruiser.png",
-    color: "#F97316",
+    color: "#E8A8A8",
   },
   {
-    name: "Thunder Max",
+    name: "M7 Scooter",
     slug: "thunder-max",
     image: "/images/vehicles/thunder-max.png",
-    color: "#EAB308",
+    color: "#F5E87A",
   },
   {
-    name: "Eco Rider",
+    name: "Cargo Bike",
     slug: "eco-rider",
     image: "/images/vehicles/eco-rider.png",
-    color: "#22C55E",
+    color: "#F5C49A",
   },
   {
     name: "Sport Moped",
     slug: "sport-moped",
     image: "/images/vehicles/sport-moped.png",
-    color: "#F97316",
+    color: "#F5B87A",
   },
   {
-    name: "Fold & Go",
+    name: "E-Cycle Green",
     slug: "fold-and-go",
     image: "/images/vehicles/fold-and-go.png",
-    color: "#3B82F6",
+    color: "#D5E8A8",
+  },
+  {
+    name: "KIVO Pink",
+    slug: "kivo-pink",
+    image: "/images/vehicles/kivo-pink.png",
+    color: "#E8A8C8",
   },
 ];
 
@@ -238,11 +244,9 @@ export default function HomePage() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section
-        className="relative min-h-[70vh] py-12 lg:py-20 overflow-hidden bg-cover bg-center bg-no-repeat"
+        className="relative min-h-screen pt-24 lg:pt-32 pb-16 overflow-hidden bg-cover bg-bottom bg-no-repeat"
         style={{ backgroundImage: "url(/hero-bg.png)" }}
       >
-        {/* Overlay for text readability while keeping vehicles visible */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/40 to-transparent" />
         <div className="container relative z-10 flex flex-col items-center justify-center">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-4xl lg:text-4xl font-medium text-gray-900 mb-6">
@@ -282,34 +286,38 @@ export default function HomePage() {
       </section>
 
       {/* New Range Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-[#faf8f5]">
         <div className="container">
           <h2 className="text-2xl md:text-3xl font-medium text-center mb-12">
-            New Range for New <span className="text-orange-500">India</span>
+            New Range for New <span className="text-[#EA4E21]">India</span>
           </h2>
-          <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory">
-            {vehicles.map((vehicle) => (
+          <div className="flex gap-3 h-72 md:h-80 lg:h-96 group/container">
+            {vehicles.map((vehicle, index) => (
               <Link
                 key={vehicle.slug}
                 href={`/products/${vehicle.slug}`}
-                className="flex-shrink-0 snap-center group"
+                className="relative flex-1 rounded-3xl overflow-hidden transition-all duration-500 ease-out hover:flex-[3] group/card group-hover/container:[&:not(:hover)]:flex-[0.6]"
+                style={{ backgroundColor: vehicle.color }}
               >
-                <div className="w-64 h-48 bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl flex items-center justify-center group-hover:shadow-lg transition-shadow">
-                  <Zap
-                    className="h-20 w-20 text-gray-300 group-hover:text-orange-400 transition-colors"
-                  />
+                {/* Vehicle image placeholder - shows on hover */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
+                  <Zap className="h-20 w-20 text-black/20" />
                 </div>
-                <p className="text-center mt-3 font-medium text-gray-700 group-hover:text-orange-500 transition-colors">
-                  {vehicle.name}
-                </p>
+                {/* Subtle icon when not hovered */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-100 group-hover/card:opacity-0 transition-opacity duration-300">
+                  <Zap className="h-12 w-12 text-black/10" />
+                </div>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Built Safe Section - Background image: add bg-built-safe or style with your hexagonal pattern */}
-      <section className="py-16 bg-stone-50">
+      {/* Built Safe Section */}
+      <section
+        className="py-16 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url(/images/built-safe-bg.png)" }}
+      >
         <div className="container">
           <h2 className="text-2xl md:text-3xl font-medium text-center mb-12">
             Built <span className="text-orange-500">Safe</span>. Built{" "}
@@ -367,64 +375,92 @@ export default function HomePage() {
               </Button>
             </div>
 
-            {/* Right Column - Image placeholder (4/12) */}
-            <div className="lg:col-span-5 relative h-80 lg:h-400px] bg-orange-100 rounded-2xl flex items-center justify-center overflow-hidden">
-              {/* Add your image: <Image src="/images/built-safe-battery.jpg" alt="..." fill className="object-cover rounded-2xl" /> */}
-              <Zap className="h-32 w-32 text-orange-300" />
+            {/* Right Column - Image (5/12) */}
+            <div className="lg:col-span-5 relative h-80 lg:h-[400px] rounded-2xl overflow-hidden bg-black">
+              <Image
+                src="/images/built-safe-battery.png"
+                alt="Person handling removable Motovolt electric scooter battery pack — Built Safe, Built Smart, Built for India"
+                fill
+                className="object-cover rounded-2xl"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                priority
+              />
             </div>
           </div>
         </div>
       </section>
 
       {/* Why Choose Auhiro Motors Section */}
-      <section className="py-16 bg-stone-50">
+      <section className="py-16 bg-[#faf8f5]">
         <div className="container">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-            Why Choose <span className="text-orange-500">Auhiro Motors</span>?
+          <h2 className="text-2xl md:text-3xl font-medium text-center mb-12 text-gray-900">
+            Why Choose <span className="text-[#EA4E21]">Auhiro Motors</span>?
           </h2>
 
           <div className="grid lg:grid-cols-[7fr_5fr] gap-6">
             {/* Left column - 2 cards (7/12) */}
             <div className="flex flex-col gap-6">
-              {/* Premium Electric Scooters */}
-              <div className="relative rounded-2xl overflow-hidden shadow-lg">
-                <div className="bg-gray-100 p-6">
-                  <div className="grid md:grid-cols-2 gap-6 items-start">
-                    <div>
-                      <h3 className="font-bold text-base uppercase tracking-wider text-gray-900 mb-3">
-                        PREMIUM ELECTRIC SCOOTERS
-                      </h3>
-                      <p className="text-gray-600 text-sm">
-                        At Auhiro, we present you with the best Motovolt models available in the market, focusing on efficiency, performance, and designs.
-                      </p>
-                    </div>
-                    <div className="space-y-4">
-                      <div className="bg-white rounded-xl p-4 shadow-md">
-                        <p className="text-xs text-gray-600 mb-1">Upto</p>
-                        <p className="text-2xl font-bold text-gray-900">₹25,000+</p>
-                        <p className="text-xs text-gray-500 mb-3">40 kms daily</p>
-                        <Button size="sm" className="text-xs px-4 py-2" asChild>
-                          <Link href="/contact">Annual savings</Link>
-                        </Button>
-                      </div>
-                      <div className="relative h-24 bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 rounded-xl flex items-end p-3">
-                        <svg className="absolute inset-0 w-full h-full opacity-30 rounded-xl" preserveAspectRatio="none">
-                          <polyline points="0,60 30,50 60,55 90,35 120,40 150,25 180,30 210,15 240,10" fill="none" stroke="white" strokeWidth="2" strokeDasharray="4 2" />
+              {/* Premium Electric Scooters - chart with callout */}
+              <div className="relative rounded-3xl overflow-hidden bg-[#f5f2ed] shadow-sm border border-stone-200/60 min-h-[320px]">
+                <div className="p-6">
+                  <h3 className="font-bold text-sm uppercase tracking-wider text-gray-800 mb-2">
+                    PREMIUM ELECTRIC SCOOTERS
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4">
+                    At Auhiro, we present you with the best Motovolt models available in the market,
+                    <br />
+                    focusing on efficiency, performance, and designs.
+                  </p>
+                  {/* Area chart with callout overlay */}
+                  <div className="relative h-52">
+                    {/* Area chart - vertical gradient: light peach at bottom, dark orange at top */}
+                    <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 240 120">
+                      <defs>
+                        <linearGradient id="chartGradientPremium" x1="0%" y1="100%" x2="0%" y2="0%">
+                          <stop offset="0%" stopColor="#f5c4a8" stopOpacity="0.8" />
+                          <stop offset="100%" stopColor="#EA4E21" stopOpacity="1" />
+                        </linearGradient>
+                      </defs>
+                      {/* Filled area under rising line */}
+                      <path
+                        d="M0 100 Q30 90 60 85 T120 50 T180 35 L240 25 L240 120 L0 120 Z"
+                        fill="url(#chartGradientPremium)"
+                      />
+                      <path d="M0 100 Q30 90 60 85 T120 50 T180 35 L240 25" fill="none" stroke="#c2410c" strokeWidth="1" opacity="0.5" />
+                      {/* X-axis line */}
+                      <line x1="0" y1="115" x2="240" y2="115" stroke="#d1d5db" strokeWidth="0.5" />
+                      {/* Tick marks */}
+                      {[0, 40, 80, 120, 160, 200, 240].map((x) => (
+                        <line key={x} x1={x} y1="115" x2={x} y2="120" stroke="#d1d5db" strokeWidth="0.5" />
+                      ))}
+                    </svg>
+                    {/* Floating info box with dashed connector to chart */}
+                    <div className="absolute right-4 -top-16 rounded-xl bg-white px-4 py-3 shadow-md border border-gray-200/80">
+                      {/* Dashed line from bottom-left corner down to chart */}
+                      <div className="absolute -left-8 bottom-0 w-12 h-16 overflow-visible pointer-events-none">
+                        <svg width="100%" height="100%" viewBox="0 0 48 64" preserveAspectRatio="none">
+                          <line x1="44" y1="0" x2="4" y2="60" stroke="#d1d5db" strokeWidth="1.5" strokeDasharray="4 3" />
                         </svg>
-                        <span className="text-white/80 text-xs">Jan</span>
-                        <span className="text-white/80 text-xs ml-auto">Dec</span>
                       </div>
+                      <p className="text-xs text-gray-500 mb-0.5">Upto</p>
+                      <p className="text-xl font-bold text-gray-900">₹25,000+</p>
+                      <p className="text-xs text-gray-500 mb-2">40 kms daily</p>
+                      <Button size="sm" className="text-xs px-3 py-1.5 h-auto bg-[#EA4E21] hover:bg-[#d1441d]" asChild>
+                        <Link href="/contact">Annual savings</Link>
+                      </Button>
                     </div>
+                    <span className="absolute bottom-1 left-0 text-xs text-gray-500">Jan</span>
+                    <span className="absolute bottom-1 right-0 text-xs text-gray-500">Dec</span>
                   </div>
                 </div>
               </div>
 
-              {/* Green & Sustainable Mobility - orange */}
-              <div className="rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 p-6 min-h-[160px]">
-                <h3 className="font-bold text-base uppercase tracking-wider text-white mb-3">
+              {/* Green & Sustainable Mobility - solid orange-red */}
+              <div className="rounded-3xl overflow-hidden bg-gradient-to-t from-[#EA4E21]/80 to-[#f5f2ed] p-6 shadow-sm min-h-[200px]">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-gray-800 mb-2">
                   GREEN & SUSTAINABLE MOBILITY
                 </h3>
-                <p className="text-white/90 text-sm">
+                <p className="text-gray-600 text-sm">
                   Ride with caution and help make a pollution-free India while enjoying premium mileage and comfort.
                 </p>
               </div>
@@ -432,29 +468,36 @@ export default function HomePage() {
 
             {/* Right column - 3 cards */}
             <div className="flex flex-col gap-6">
-              {/* Exceptional Customer Experience - split layout */}
-              <div className="rounded-2xl overflow-hidden shadow-lg bg-gray-100">
-                <div className="grid md:grid-cols-2 gap-0">
-                  <div className="p-6">
-                    <h3 className="font-bold text-base uppercase tracking-wider text-gray-900 mb-3">
+              {/* Exceptional Customer Experience - light bg, image with wavy gradient */}
+              <div className="rounded-3xl overflow-hidden shadow-sm min-h-[200px]" style={{ background: "linear-gradient(to top, rgba(234, 78, 33, 0.8) 0%, #f5f2ed 80%)" }}>
+                <div className="relative grid md:grid-cols-[1.2fr_1fr] min-h-[180px]">
+                  <div className="p-6 flex flex-col justify-center relative z-10">
+                    <h3 className="font-bold text-sm uppercase tracking-wider text-gray-800 mb-2">
                       EXCEPTIONAL CUSTOMER EXPERIENCE
                     </h3>
                     <p className="text-gray-600 text-sm">
                       Our client&apos;s satisfaction is our priority. Right from selection to after-sales service, we make your journey seamless.
                     </p>
                   </div>
-                  <div className="bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 p-6 flex items-center justify-center min-h-[120px]">
-                    <div className="flex flex-col gap-2">
-                      <div className="w-16 h-16 rounded-full bg-white/20" />
-                      <div className="w-14 h-14 rounded-full bg-white/20 ml-4" />
+                  <div className="relative min-h-[160px] md:min-h-0">
+                    {/* Wavy orange gradient overlap on left edge */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#EA4E21]/40 via-[#EA4E21]/10 to-transparent z-[1] md:rounded-r-3xl" style={{ clipPath: "polygon(20% 0, 100% 0, 100% 100%, 0% 100%)" }} />
+                    {/* Hex pattern overlay */}
+                    <div className="absolute inset-0 opacity-[0.07] z-[2]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 0 L18.66 5 L18.66 15 L10 20 L1.34 15 L1.34 5 Z' fill='none' stroke='%23EA4E21' stroke-width='0.5'/%3E%3C/svg%3E\")" }} />
+                    {/* People placeholder - gradient with silhouette */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-stone-200 to-stone-300 rounded-r-3xl flex items-center justify-end pr-6">
+                      <div className="flex -space-x-3">
+                        <div className="w-14 h-14 rounded-full bg-white/60 border-2 border-white/80" />
+                        <div className="w-12 h-12 rounded-full bg-white/50 border-2 border-white/80" />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Comprehensive Services - light */}
-              <div className="rounded-2xl overflow-hidden shadow-lg bg-gray-100 p-6 min-h-[120px]">
-                <h3 className="font-bold text-base uppercase tracking-wider text-gray-900 mb-3">
+              {/* Comprehensive Services - light text only */}
+              <div className="rounded-3xl overflow-hidden bg-[#f5f2ed] shadow-sm border border-stone-200/60 p-6 min-h-[160px]">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-gray-800 mb-2">
                   COMPREHENSIVE SERVICES
                 </h3>
                 <p className="text-gray-600 text-sm">
@@ -462,14 +505,16 @@ export default function HomePage() {
                 </p>
               </div>
 
-              {/* Experience Before You Buy - orange */}
-              <div className="rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 p-6 min-h-[120px]">
-                <h3 className="font-bold text-base uppercase tracking-wider text-white mb-3">
-                  EXPERIENCE BEFORE YOU BUY
-                </h3>
-                <p className="text-white/90 text-sm">
-                  Wanting an electric vehicle but not sure if you want to make the switch? Take a free test ride to see for yourself the benefit of innovation, quick acceleration, and easy handling.
-                </p>
+              {/* Experience Before You Buy - light bg with subtle gradient from bottom-right */}
+              <div className="relative rounded-3xl overflow-hidden shadow-sm p-6 min-h-[160px]" style={{ background: "linear-gradient(to top, rgba(234, 78, 33, 0.5) 0%, #f5f2ed 60%)" }}>
+                <div className="relative z-10">
+                  <h3 className="font-bold text-sm uppercase tracking-wider text-gray-800 mb-2">
+                    EXPERIENCE BEFORE YOU BUY
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    Wanting an electric vehicle but not sure if you want to make the switch? Then take a free test ride to see for yourself the benefit of innovation, quick acceleration, and easy handling.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -488,7 +533,7 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {supportServices.map((service, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
+              <Card key={index} className="hover:shadow-lg hover:border-[#EA4E21] border border-transparent transition-all duration-200">
                 <CardContent className="p-6">
                   <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
                     <service.icon className="h-6 w-6 text-orange-500" />
@@ -503,7 +548,7 @@ export default function HomePage() {
       </section>
 
       {/* Calculate Your Savings Section */}
-      <section className="py-16 bg-orange-50">
+      <section className="py-16 bg-[#faf8f5]">
         <div className="container">
           <h2 className="text-2xl md:text-3xl font-medium text-center mb-4">
             Calculate Your <span className="text-orange-500">Savings</span>
@@ -512,105 +557,10 @@ export default function HomePage() {
             See how much you can save by switching to electric. Compare your current petrol costs with our EV models.
           </p>
 
-          <div className="max-w-5xl mx-auto">
-            <div className="grid lg:grid-cols-3 gap-6">
-              {/* Select Model & Vehicle Info */}
-              <Card className="lg:col-span-1">
-                <CardContent className="p-6 space-y-6">
-                  {/* Model Selection */}
-                  <div>
-                    <label className="font-medium text-sm text-gray-700 mb-2 block">
-                      SELECT EV MODEL
-                    </label>
-                    <Select value={selectedModel} onValueChange={setSelectedModel}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a model" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {evModels.map((model) => (
-                          <SelectItem key={model.id} value={model.id}>
-                            <div className="flex items-center gap-2">
-                              <span>{model.name}</span>
-                              <span className="text-xs text-gray-400">({model.category})</span>
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <div className="mt-3 p-3 bg-orange-50 rounded-lg">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Battery className="h-4 w-4 text-orange-500" />
-                        <span className="text-gray-600">Range:</span>
-                        <span className="font-semibold text-orange-600">{currentModel.range} km/charge</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Your Vehicle Mileage */}
-                  <div>
-                    <label className="font-medium text-sm text-gray-700 mb-2 block">
-                      YOUR VEHICLE MILEAGE
-                    </label>
-                    <div className="relative">
-                      <Fuel className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                      <Input
-                        type="number"
-                        value={petrolMileage}
-                        onChange={(e) => setPetrolMileage(e.target.value)}
-                        placeholder="Enter km/liter"
-                        className="pl-10"
-                        min="1"
-                        max="100"
-                      />
-                    </div>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Average mileage of your current petrol vehicle (km/L)
-                    </p>
-                  </div>
-
-                  {/* Petrol Price */}
-                  <div className="p-3 bg-red-50 rounded-lg">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Current Petrol Price</span>
-                      <span className="font-bold text-red-600">₹{petrolPrice.toFixed(2)}/L</span>
-                    </div>
-                    <p className="text-xs text-gray-400 mt-1">Coimbatore, Tamil Nadu</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Usage Slider */}
-              <Card className="lg:col-span-1">
-                <CardContent className="p-6">
-                  <h3 className="font-bold text-sm text-gray-700 mb-6">YOUR DAILY TRAVEL</h3>
-                  <div className="mb-8">
-                    <Slider
-                      value={dailyUsage}
-                      onValueChange={setDailyUsage}
-                      min={5}
-                      max={100}
-                      step={5}
-                      className="w-full"
-                    />
-                    <div className="flex justify-between text-sm text-gray-500 mt-2">
-                      <span>5 KM</span>
-                      <span>100 KM</span>
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-sm text-gray-500">Daily distance</div>
-                    <div className="text-5xl font-bold text-orange-500 my-2">{dailyUsage[0]}</div>
-                    <div className="text-gray-600">KM / day</div>
-                  </div>
-                  <div className="mt-6 pt-4 border-t text-center">
-                    <div className="text-sm text-gray-500">Monthly travel</div>
-                    <div className="text-xl font-semibold text-gray-700">{monthlyKm.toLocaleString()} KM</div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Savings Display */}
-              <Card className="lg:col-span-1 border-2 border-green-200">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-6 rounded-3xl overflow-hidden bg-[#e8e5e0] p-4">
+              {/* Left column - YOUR SAVINGS */}
+              <Card className="rounded-2xl border-0 shadow-none">
                 <CardContent className="p-6">
                   <h3 className="font-bold text-sm text-gray-700 mb-6">YOUR SAVINGS</h3>
                   <div className="space-y-4">
@@ -643,9 +593,7 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div className="text-center pt-2">
-                      <p className="text-sm text-gray-500">
-                        Annual Savings
-                      </p>
+                      <p className="text-sm text-gray-500">Annual Savings</p>
                       <p className="text-2xl font-bold text-green-600">
                         ₹{(monthlySavings * 12).toLocaleString()}
                       </p>
@@ -659,6 +607,103 @@ export default function HomePage() {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Right column - Model, Mileage, Travel */}
+              <div className="bg-[#e8e5e0] rounded-2xl p-2 space-y-4">
+                {/* Select Model & Vehicle Info */}
+                <Card className="rounded-2xl border-0 shadow-none">
+                  <CardContent className="p-6 space-y-6">
+                    {/* Model Selection */}
+                    <div>
+                      <label className="font-medium text-sm text-gray-700 mb-2 block">
+                        SELECT EV MODEL
+                      </label>
+                      <Select value={selectedModel} onValueChange={setSelectedModel}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select a model" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {evModels.map((model) => (
+                            <SelectItem key={model.id} value={model.id}>
+                              <div className="flex items-center gap-2">
+                                <span>{model.name}</span>
+                                <span className="text-xs text-gray-400">({model.category})</span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <div className="mt-3 p-3 bg-orange-50 rounded-lg">
+                        <div className="flex items-center gap-2 text-sm">
+                          <Battery className="h-4 w-4 text-orange-500" />
+                          <span className="text-gray-600">Range:</span>
+                          <span className="font-semibold text-orange-600">{currentModel.range} km/charge</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Your Vehicle Mileage */}
+                    <div>
+                      <label className="font-medium text-sm text-gray-700 mb-2 block">
+                        YOUR VEHICLE MILEAGE
+                      </label>
+                      <div className="relative">
+                        <Fuel className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                        <Input
+                          type="number"
+                          value={petrolMileage}
+                          onChange={(e) => setPetrolMileage(e.target.value)}
+                          placeholder="Enter km/liter"
+                          className="pl-10"
+                          min="1"
+                          max="100"
+                        />
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Average mileage of your current petrol vehicle (km/L)
+                      </p>
+                    </div>
+
+                    {/* Petrol Price */}
+                    <div className="p-3 bg-red-50 rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Current Petrol Price</span>
+                        <span className="font-bold text-red-600">₹{petrolPrice.toFixed(2)}/L</span>
+                      </div>
+                      <p className="text-xs text-gray-400 mt-1">Coimbatore, Tamil Nadu</p>
+                    </div>
+
+                    {/* Daily Travel Slider */}
+                    <div className="pt-4 border-t">
+                      <h3 className="font-bold text-sm text-gray-700 mb-4">YOUR DAILY TRAVEL</h3>
+                      <div className="mb-6">
+                        <Slider
+                          value={dailyUsage}
+                          onValueChange={setDailyUsage}
+                          min={5}
+                          max={100}
+                          step={5}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-sm text-gray-500 mt-2">
+                          <span>5 KM</span>
+                          <span>100 KM</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-sm text-gray-500">Daily distance</div>
+                          <div className="text-3xl font-bold text-orange-500">{dailyUsage[0]} KM</div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm text-gray-500">Monthly travel</div>
+                          <div className="text-xl font-semibold text-gray-700">{monthlyKm.toLocaleString()} KM</div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
         </div>
@@ -667,7 +712,7 @@ export default function HomePage() {
       {/* FAQ Section */}
       <section className="py-16 bg-white">
         <div className="container">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-medium text-center mb-12">
             Frequently Asked Questions <span className="text-orange-500">(FAQ)</span>
           </h2>
 
@@ -682,7 +727,7 @@ export default function HomePage() {
               >
                 <CardContent className="p-4">
                   <div className="flex justify-between items-center">
-                    <h3 className="font-semibold text-gray-800">{faq.question}</h3>
+                    <h3 className="font-base text-gray-800">{faq.question}</h3>
                     {openFaq === index ? (
                       <ChevronUp className="h-5 w-5 text-orange-500" />
                     ) : (
