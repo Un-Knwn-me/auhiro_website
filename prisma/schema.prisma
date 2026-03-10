@@ -1,0 +1,260 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// NextAuth models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(ADMIN)
+  accounts      Account[]
+  sessions      Session[]
+  blogs         Blog[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+// Product models
+enum ProductCategory {
+  E_CYCLE
+  E_SCOOTER
+  E_MOPED
+}
+
+model Product {
+  id             String          @id @default(cuid())
+  name           String
+  slug           String          @unique
+  tagline        String?
+  description    String          @db.Text
+  category       ProductCategory
+  basePrice      Float
+  specifications Json?
+  features       String[]
+  isFeatured     Boolean         @default(false)
+  isActive       Boolean         @default(true)
+  order          Int             @default(0)
+
+  // SEO
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String[]
+
+  // Relations
+  variants ProductVariant[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([category])
+}
+
+model ProductVariant {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  name            String
+  price           Float
+  motorPower      String? // e.g., "250W", "500W"
+  batteryCapacity String? // e.g., "48V 20Ah"
+  range           String? // e.g., "60-80 km"
+  topSpeed        String? // e.g., "25 km/h"
+  weight          String? // e.g., "25 kg"
+  chargingTime    String? // e.g., "4-6 hours"
+  isDefault       Boolean @default(false)
+  isActive        Boolean @default(true)
+
+  // Relations
+  colors ProductColor[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+}
+
+model ProductColor {
+  id        String         @id @default(cuid())
+  variantId String
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  name      String
+  hexCode   String
+  images    String[] // Array of image URLs
+  isDefault Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([variantId])
+}
+
+// Gallery
+model Gallery {
+  id          String  @id @default(cuid())
+  title       String
+  description String?
+  imageUrl    String
+  category    String? // e.g., "showroom", "events", "products"
+  order       Int     @default(0)
+  isActive    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Blog
+model Blog {
+  id           String    @id @default(cuid())
+  title        String
+  slug         String    @unique
+  content      String    @db.Text
+  excerpt      String?
+  coverImage   String?
+  author       User?     @relation(fields: [authorId], references: [id])
+  authorId     String?
+  tags         String[]
+  isPublished  Boolean   @default(false)
+  publishedAt  DateTime?
+  viewCount    Int       @default(0)
+
+  // SEO
+  seoTitle       String?
+  seoDescription String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isPublished])
+}
+
+// Lead Management
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  CONVERTED
+  CLOSED
+}
+
+enum LeadSource {
+  WEBSITE_FORM
+  WHATSAPP
+  PHONE
+  WALK_IN
+  REFERRAL
+  OTHER
+}
+
+model Lead {
+  id              String     @id @default(cuid())
+  name            String
+  email           String?
+  phone           String
+  productInterest String?
+  variantInterest String?
+  message         String?    @db.Text
+  source          LeadSource @default(WEBSITE_FORM)
+  status          LeadStatus @default(NEW)
+  notes           String?    @db.Text
+  assignedTo      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Contact Form Submissions
+model Contact {
+  id        String  @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String  @db.Text
+  isRead    Boolean @default(false)
+  isReplied Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+// Site Settings
+model SiteSettings {
+  id    String @id @default("settings")
+  key   String @unique
+  value Json
+
+  updatedAt DateTime @updatedAt
+}
+
+// Analytics Events (optional - for custom tracking)
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  eventType String
+  eventData Json?
+  page      String?
+  sessionId String?
+  createdAt DateTime @default(now())
+
+  @@index([eventType])
+  @@index([createdAt])
+}
