@@ -83,40 +83,40 @@ const evModels = [
 // Vehicle data for showcase - 6 vehicles with distinct background colors
 const vehicles = [
   {
-    name: "E-Cycle Red",
+    name: "KIVO",
     slug: "city-cruiser",
-    image: "/images/vehicles/city-cruiser.png",
-    color: "#E8A8A8",
+    image: "/images/vehicles/kivo-red.png",
+    color: "#E99D96",
   },
   {
     name: "M7 Scooter",
     slug: "thunder-max",
-    image: "/images/vehicles/thunder-max.png",
-    color: "#F5E87A",
+    image: "/images/vehicles/m7-yellow.png",
+    color: "#FDEE79",
   },
   {
-    name: "Cargo Bike",
+    name: "HUM",
     slug: "eco-rider",
-    image: "/images/vehicles/eco-rider.png",
-    color: "#F5C49A",
+    image: "/images/vehicles/hum-orange.png",
+    color: "#FCC19A",
   },
   {
-    name: "Sport Moped",
+    name: "URBAN",
     slug: "sport-moped",
-    image: "/images/vehicles/sport-moped.png",
-    color: "#F5B87A",
+    image: "/images/vehicles/urban-orange.png",
+    color: "#F9B079",
   },
   {
-    name: "E-Cycle Green",
+    name: "KIVO EASY",
     slug: "fold-and-go",
-    image: "/images/vehicles/fold-and-go.png",
-    color: "#D5E8A8",
+    image: "/images/vehicles/kivo-easy-neon.png",
+    color: "#ECE8A7",
   },
   {
-    name: "KIVO Pink",
+    name: "KIVO 24",
     slug: "kivo-pink",
-    image: "/images/vehicles/kivo-pink.png",
-    color: "#E8A8C8",
+    image: "/images/vehicles/kivo24-pink.png",
+    color: "#E599AA",
   },
 ];
 
@@ -296,17 +296,17 @@ export default function HomePage() {
               <Link
                 key={vehicle.slug}
                 href={`/products/${vehicle.slug}`}
-                className="relative flex-1 rounded-3xl overflow-hidden transition-all duration-500 ease-out hover:flex-[3] group/card group-hover/container:[&:not(:hover)]:flex-[0.6]"
+                className="relative flex-1 rounded-3xl overflow-hidden transition-all duration-500 ease-out hover:flex-[2.8] group/card group-hover/container:[&:not(:hover)]:flex-[0.7]"
                 style={{ backgroundColor: vehicle.color }}
               >
-                {/* Vehicle image placeholder - shows on hover */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
-                  <Zap className="h-20 w-20 text-black/20" />
-                </div>
-                {/* Subtle icon when not hovered */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-100 group-hover/card:opacity-0 transition-opacity duration-300">
-                  <Zap className="h-12 w-12 text-black/10" />
-                </div>
+                {/* Vehicle image - fills card, cropped at edges */}
+                <Image
+                  src={vehicle.image}
+                  alt={vehicle.name}
+                  fill
+                  className="object-cover object-center transition-transform duration-500 group-hover/card:scale-105"
+                  sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                />
               </Link>
             ))}
           </div>

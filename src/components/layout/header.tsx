@@ -75,7 +75,7 @@ export function Header() {
   };
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-50 px-4 lg:px-8 pt-3 pb-1">
+    <header className="fixed top-0 left-0 right-0 z-50 px-4 lg:px-8 pt-3 pb-1">
       <div className="relative">
         {/* Floating dark glass navbar */}
         <div className="bg-black/20 backdrop-blur-2xl rounded-full shadow-2xl border border-white/10">
